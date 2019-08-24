@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>
+Django startings
+</title>
+{% load staticfiles%}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" src="{% static "js/fusioncharts.js" %}"></script>
+<script type="text/javascript" src="{% static "js/fusioncharts.charts.js" %}"></script>
+<script type="text/javascript" src="{% static "js/fusioncharts.theme.fusion.js" %}"></script>
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}" type="text/css">
+</head>
+<body>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+  <a class="navbar-brand" href="#">Logo</a>
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="/contact">Contact</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Link</a>
+    </li>
+  </ul>
+</nav>
+<div id="myFirstchart-container">{{ output|safe }}</div>
+<div class="container-fluid" style="margin-top:80px;">
+<div class="row">
+<div class="col-md-4">
+<p>In contact page</p>
+</div>
+<div class="col-md-4">
+<p>In contact page</p>
+</div>
+<div class="col-md-4">
+<p>In contact page</p>
+</div>
+</div>
+</div>
+<p>Hello Girish</p>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<head>
+</head>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+{% extends "myapp/header.html" %}
+<style>
+
+
+</style>
+
+{% block content %}
+<style>
+#profupd,#profupd1,#myElem
+{
+display:none;
+}
+
+@media screen and (max-width:500px)
+{
+    .hero-image {
+
+  height: none;
+
+}
+ #mh.col-md-2{
+     margin-top:15%;
+ }
+ #lgb
+ {
+ float:left;
+ margin-top:6px;
+ }
+ #leftalign
+ {
+     text-align:left;
+ }
+}
+@media screen and (min-width:500px)
+{
+ #mh.col-md-2{
+     margin-top:10%;
+            }
+#leftalign
+{
+    text-align:center;
+}
+
+ #lgb{
+     float:right;
+     margin-top:-2px;
+ }
+}
+
+.hero-text {
+  text-align: center;
+  position: absolute;
+
+  transform: translate(-10%, -10%);
+  color: white;
+}
+
+input#profupd
+{
+display:none;
+}
+.custom-select {
+  position: relative;
+  font-family: Arial;
+}
+#userchat{
+    display:none;
+}
+</style>
+<script>
+function myFunction()
+{
+  document.getElementById("profupd1").style.display="block";
+  document.getElementById("profupd").style.display="block";
+  document.getElementById("but").style.display="none";
+
+}
+
+
+
+$(document).ready(function(){
+  $("#send").click(function(){
+    $("#formsend").submit();
+    $("#myElem").show().delay(30000).fadeOut();
+  });
+});
+$(function() {
+    // setTimeout() function will be fired after page is loaded
+    // it will wait for 5 sec. and then will fire
+    // $("#successMessage").hide() function
+    setTimeout(function() {
+        $("#myEdlem").hide()
+    }, 5000);
+});
+</script>
+<ul>
+	<li>
+
+
+		<form method='POST' action="/myapp/logout/" style="margin-top:-1%;">
+		{% csrf_token %}
+			<input id="lgb"  class=" button button1" type="submit" value="LOGOUT"/>
+		</form>
+	</li>
+</ul>
+
+<div class="container-fluid" >
+	<div class="row" style="">
+	        <div class="col-md-2" id="mh" style="color:white;">
+			<form method='POST' action="/myapp/message/" enctype="multipart/form-data" >
+			 {% csrf_token  %}
+			 {% for us in  User %}
+			 <img src="{{us.image.url}}" height="150" width="150"></br>
+			 {%endfor%}
+			 <input type="file" name="img" id="profupd" />
+			 <input type="submit" value="UPDATE" id="profupd1" name="action"/>
+			</form>
+			 <button onclick="myFunction()" id="but">UPDATE</button>
+		</div>
+		<div class="col-md-2" id="mh2" style="margin-top:10%;color:white;" >
+			<h1 style="font-size:35px;font-weight:500;font-family: 'Akronim', cursive;"><span style="color:#ff0055;">Hello </span>{{user}}</h1>
+			<form method='POST' action="/myapp/message/">
+				{% csrf_token  %}
+				<select name="username" style="padding:3% 4%;font-size:15px;border-radius:0%;">
+	                        <option value="0">USERNAME</option>
+        	                {%for b in Infofrnds%}
+                	        <option value={{b.username}}>{{b.username}}</option>
+                        	{%endfor%}
+	                        </select>
+
+<!--				Username
+				</br><input type="text" name="username" placeholder="" required/></br>-->
+				<br>
+				</br><textarea name="message" style="" placeholder="Message" required></textarea></br>
+				<input class=" button button1" id="send"  type="submit" name="action" value="SEND"/>
+			</form>
+			<h3 id="myEdlem">{{sr}}</h3>
+		</div>
+        <div class="col-md-3" style="margin-top:10%;color:white;" >
+                	<h1 style="font-size:35px;font-weight:500;font-family: 'Akronim', cursive;"><span style="color:#ff0055;">Search Friends </span></h1>
+			<form method="POST" action="/myapp/message/">
+			{% csrf_token  %}
+			<input type="text" name="search" placeholder="Search..."/>
+			<button type="submit" name="action" value="GO" class="buttonicon button1"><i class="fa fa-search"></i></button>
+			</form>
+			{%for a in waiting%}
+			<h5>{{a}} <span style="color:red;">Waiting</span></h5>
+			{%endfor%}
+			{%for b in Frnds%}
+	                <h5>{{b}} <span style="color:green;">Friends</span></h5>
+        	        {%endfor%}
+			{%for c in Request%}
+			<input type="text" id="req_username.{{forloop.counter}}" value="{{c}}" style="display:none;"/>
+	                <p>{{c}} <button onclick="sendreq(document.getElementById('req_username.{{forloop.counter}}').value)" class="buttonicon button1">REQUEST</button></p>
+        	        {%endfor%}
+			<script>
+			function sendreq(a){
+			$('input[name="req_usname"]').val(a);
+			$( "#sendrequest" ).click();
+			$('input[name="req_usname"]').val("");
+			}
+			</script>
+			<form  method="POST" style="display:none;">
+	                {% csrf_token  %}
+        	        <input type="text" name="req_usname" value="some"/>
+                	 <button id="sendrequest" type="submit" name="action" value="SEND_REQUEST" class="buttonicon button1"><i class="fa fa-search"></i></button>
+	                </form>
+			<form  method="POST" id="searchform" style="display:none;">
+			{% csrf_token  %}
+			<input type="text" value="some" name="username" id="seauser" required/>
+			</form>
+
+                </div>
+	<!--	<div class="col-md-4" id="userchat" >
+
+            {% for mesg in messages %}
+
+			<p style="text-align:center;">{% ifequal from_user_ses mesg.from_username %}From: {{mesg.from_username}} {{mesg.send_time|date:"SHORT_DATE_FORMAT"}}{{ mesg.send_time|time:" H:i" }} </br> Message : {{ mesg.message }}
+
+			<input type="text" id="{{forloop.counter}}.username" name="username" value="{{mesg.from_username}}" style="display:none;"/>
+			<input type="text" id="{{forloop.counter}}.message" name="message" value="{{mesg.message}}" style="display:none;"/>
+			<input type="text" id="{{forloop.counter}}.idd" name="idd" value="{{mesg.id}}" style="display:none;"/>
+	                <button id="sub" class="buttonicon button1" onclick="formsubmit(document.getElementById('{{forloop.counter}}.username').value,document.getElementById('{{forloop.counter}}.message').value,document.getElementById('{{forloop.counter}}.idd').value)"><i class="fa fa-close "></i></button></p>
+
+		    {%endifequal%}
+
+
+
+            {% endfor %}
+			<script>
+			function formsubmit(a,b,c){
+			$('input[name="username"]').val(a);
+			$('input[name="message"]').val(b);
+			$('input[name="idd"]').val(c);
+  			$( "#frombut" ).submit();
+			}
+			</script>
+			<form method="POST" style="display:none" action="/myapp/delmesgs/" id="frombut">
+			{% csrf_token  %}
+			<input type="text" name="username" value="ray" />
+			<input type="text" name="message" value="some" />
+			<input type="text" name="idd" value="ss" />
+			</form>
+
+		</div>-->
+
+
+		<div class="col-md-2" style="margin-top:10%;color:white;" >
+        	        <h1 style="font-size:35px;font-weight:500;font-family: 'Akronim', cursive;"><span style="color:#ff0055;"> Friends </span></h1>
+			{% for frnd in friends %}
+			<input type="text" id="{{forloop.counter}}.res_usname" name="res_usname" value="{{frnd.username}}" style="display:none;"/></br>
+			<button onclick="usersess(document.getElementById('{{forloop.counter}}.res_usname').value)" type="submit" style="font-size:15px;text-transform: uppercase;" class="button button1"> <img style="border-radius:50%;" src="{{frnd.image.url}}" height="50" width="50" >  &nbsp;{{frnd.username}}</button>
+			<p>{% ifequal "waiting" frnd.status %} {{frnd.username}}<button id="acept" onclick="resformacceptsubmit(document.getElementById('{{forloop.counter}}.res_usname').value)" class="buttonicon button1"><i  class="fa fa-check"></i></button> <button id="rejct" onclick="resformrejectsubmit(document.getElementById('{{forloop.counter}}.res_usname').value)" class="buttonicon button1"><i  class="fa fa-close"></i></button>{%endifequal%}</p>
+			{%endfor%}
+			<form id="userchatform" method="POST" style="display:none;" action="/myapp/message/">
+			{% csrf_token  %}
+			<input type="text" name="from_usname" id="from_usname1" value="user"/>
+			<button id="userchatbut" type="submit" name="action" value="USER_CHAT" class="buttonicon button1"><i class="fa fa-search"></i></button>
+			</form>
+			<form id="resformaccept" method="POST" style="display:none;" action="/myapp/message/">
+			{% csrf_token  %}
+			<input type="text" name="res_usname" value="some"/>
+			<button id="accept" type="submit" name="action" value="RESPONSE_ACCEPT" class="buttonicon button1"><i class="fa fa-search"></i></button>
+			</form>
+			<form id="resformreject" method="POST" style="display:none;">
+            {% csrf_token  %}
+	        <input type="text" name="res_usname" value="some"/>
+			 <button id="reject" type="submit" name="action" value="RESPONSE_REJECT" class="buttonicon button1"><i class="fa fa-search"></i></button>
+            </form>
+			<script>
+			function usersess(a)
+            {
+                $('input[name="from_usname"]').val(a);
+                $( "#userchatbut" ).click();
+
+            }
+
+        	function resformacceptsubmit(a){
+	                $('input[name="res_usname"]').val(a);
+        	        $( "#accept" ).click();
+                	}
+			function resformrejectsubmit(a){
+        	        $('input[name="res_usname"]').val(a);
+                	$( "#reject" ).click();
+	                }
+        	</script>
+		</div>
+			    	<div class="col-md-3" style="margin-top:2%;color:white;box-shadow: 7px 8px 20px 8px #00000080;height:560px;overflow:auto;" >
+			<h1 id="leftalign" style="font-size:35px;font-weight:500;font-family: 'Akronim', cursive;"><span style="color:#ff0055;"> Messages </span></h1>
+            <p>{{ selmsgs }}</p>
+			{% for frnd in friends %}
+
+			<p>{% ifequal from_user_ses frnd.username %} <button onclick="usersess(document.getElementById('{{forloop.counter}}.res_usname').value)" type="submit" style="font-size:15px;text-transform: uppercase;" class="button button1"> <img style="border-radius:50%;" src="{{frnd.image.url}}" height="50" width="50" >  &nbsp;{{frnd.username}}</button>{%endifequal%}</p>
+			<!--<p>{% ifequal "waiting" frnd.status %} {{frnd.username}}<button id="acept" onclick="resformacceptsubmit(document.getElementById('{{forloop.counter}}.res_usname').value)" class="buttonicon button1"><i  class="fa fa-check"></i></button> <button id="rejct" onclick="resformrejectsubmit(document.getElementById('{{forloop.counter}}.res_usname').value)" class="buttonicon button1"><i  class="fa fa-close"></i></button>{%endifequal%}</p>-->
+			{%endfor%}
+
+			{% for mesg in messages %}
+			{% load tz %}
+
+
+			<p style="text-align:center;">{% if from_user_ses == mesg.from_username and user == mesg.to_username or from_user_ses == mesg.to_username and user == mesg.from_username %}
+            {%if user == mesg.from_username %} You : {{mesg.send_time|date:"SHORT_DATE_FORMAT"}}{{ mesg.send_time|time:" H:i" }} </br> Message : {{ mesg.message }}
+			{%else%}Friend : {{mesg.send_time|date:"SHORT_DATE_FORMAT"}}{{ mesg.send_time|time:" H:i" }} </br> Message : {{ mesg.message }}
+			<!--TO :  {{mesg.from_username}} {{mesg.send_time|date:"SHORT_DATE_FORMAT"}}{{ mesg.send_time|time:" H:i" }} </br> Message : {{ mesg.message }}-->
+            {%endif%}
+			<input type="text" id="{{forloop.counter}}.username" name="username" value="{{mesg.from_username}}" style="display:none;"/>
+			<input type="text" id="{{forloop.counter}}.username1" name="username1" value="{{mesg.to_username}}" style="display:none;"/>
+			<input type="text" id="{{forloop.counter}}.message" name="message" value="{{mesg.message}}" style="display:none;"/>
+			<input type="text" id="{{forloop.counter}}.idd" name="idd" value="{{mesg.id}}" style="display:none;"/>
+	                <button id="sub" class="buttonicon button1" onclick="formsubmit(document.getElementById('{{forloop.counter}}.username').value,document.getElementById('{{forloop.counter}}.username1').value,document.getElementById('{{forloop.counter}}.message').value,document.getElementById('{{forloop.counter}}.idd').value)"><i class="fa fa-close "></i></button></p>
+
+		    {%endif%}
+		    {% if from_user_ses and forloop.counter == mesg_count %}
+            <form method='POST' action="/myapp/message/">
+			{% csrf_token  %}
+			<input type="text" name="username" value="{{from_user_ses}}" style="display:none;"/></br>
+		    <textarea name="message" style="" placeholder="Write a Message..." required></textarea>
+		    <input class=" button button1" id="send"  type="submit" name="action" value="REPLY"/>
+		    </form>
+		    {%endif%}
+
+		    {%endfor%}
+
+ 			<script>
+			function formsubmit(a,b,c,d){
+			$('input[name="username"]').val(a);
+			$('input[name="username1"]').val(b);
+			$('input[name="message"]').val(c);
+			$('input[name="idd"]').val(d);
+  			$( "#deletemsg" ).click();
+			}
+			</script>
+			<form method="POST" style="display:none" action="/myapp/message/" id="frombut">
+			{% csrf_token  %}
+			<input type="text" name="username" value="ray" />
+			<input type="text" name="username1" value="ray" />
+			<input type="text" name="message" value="some" />
+			<input type="text" name="idd" value="ss" />
+			<input type="submit" name="action" value="DELETEMESG" id="deletemsg" />
+			</form>
+		</div>
+
+	</div>
+
+</div>
+<script>
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+</script>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "myapp/header.html" %}
+<script>
+    function redirect(){
+       window.location.href = "/myapp/index.html";
+    }
+
+    setTimeout(redirect, 2000); //2000 is equivalent to 2 seconds
+</script>
+{% block content %}
+<ul>
+		<li>
+			<a class="active" href="#home" >HOME</a>
+			<a href="#">LOGIN</a>
+			<a href="#">SIGNUP</a>
+			<a href="#">CONTACT US</a>
+		</li>
+	</ul>
+<div class="hero-text">
+<h1 style="font-size:50px;font-family: 'Akronim', cursive;"><span style="color:#ff0055;">Hello </span>World</h1>
+<div class="container">
+<div class="row" style="">
+<h4>LOGGING OUT AND REDIRECTING TO HOME PAGE</h4>
+</div>
+</div>
+
+
+</div>
+{% endblock %}
